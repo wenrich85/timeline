@@ -20,5 +20,9 @@ defmodule Timeline do
     GenServer.call(timeline, {:add_milestone, initial_info})
   end
 
+  def add_step(timeline, {_milstone, _step_to_add}=ms_info) do
+    GenServer.call(timeline,{:add_step, ms_info})
+  end
+
 
 end

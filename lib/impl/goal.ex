@@ -42,10 +42,12 @@ defmodule Timeline.Impl.Goal do
     struct(goal, milestones: add_to_milestones(goal.milestones, milestone))
   end
 
-  def add_step_to_milestone(goal, {milestone, step}) do
+  # def add_step(goal, {milestone, step}) do
 
-    update_in(get_milestone_by_id(goal, milestone),fn x -> x end ))
-  end
+  #   struct(goal, )
+
+  #   # update_in(get_milestone_by_id(goal, milestone),fn x -> x end ))
+  # end
 
   @spec delete_milestone(t, Milestone.t) :: t
   def delete_milestone(goal, milestone) do

@@ -2,6 +2,7 @@ defmodule Timeline.Runtime.Server do
   alias Timeline.Impl.Goal
   alias Timeline.Impl.Milestone
   use GenServer
+  use Agent
 
   #### client #####
   def start_link(initial_data) do
@@ -27,6 +28,11 @@ defmodule Timeline.Runtime.Server do
     ms = Milestone.new_milestone(milestone_info)
     updated_goal = Goal.add_milestone(timeline, ms)
     {:reply, updated_goal, updated_goal}
+  end
+
+  def handle_call({:add_step, milestone_info}, _from, timeline) do
+    ug = Goal.add_step(timeline, milestone_info)
+    {:reply, ug, ug }
   end
 
 end
