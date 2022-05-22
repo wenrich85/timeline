@@ -25,8 +25,8 @@ defmodule Timeline.Runtime.Server do
   end
 
   def handle_call({:add_milestone, milestone_info}, _from, timeline) do
-    ms = Milestone.new_milestone(milestone_info)
-    updated_goal = Goal.add_milestone(timeline, ms)
+    {:ok, milestone } = Agent.start_link(fn -> Milestone.new_milestone(milestone_info) end)
+    updated_goal = Goal.add_milestone(timeline, milestone)
     {:reply, updated_goal, updated_goal}
   end
 
@@ -34,5 +34,7 @@ defmodule Timeline.Runtime.Server do
     ug = Goal.add_step(timeline, milestone_info)
     {:reply, ug, ug }
   end
+
+
 
 end
