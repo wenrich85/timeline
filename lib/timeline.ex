@@ -20,8 +20,24 @@ defmodule Timeline do
     GenServer.call(timeline, {:add_milestone, initial_info})
   end
 
-  def add_step(timeline, {_milstone, _step_to_add}=ms_info) do
-    GenServer.call(timeline,{:add_step, ms_info})
+  def show_timeline(timeline) do
+    tl = :sys.get_state(timeline)
+    struct( tl, milestones: Enum.map(tl.milestones, fn milestone ->
+                              Agent.get(milestone, fn ms_state ->
+                                Enum.map(ms_state.steps, fn step ->
+                                  Agent.get(step, fn step_state -> step_state end)
+                                end)
+                              end)
+                            end))
+
+  end
+
+  def add_step(timeline, {_milestone, _step_to_add}=ms_info) do
+    GenServer.cast(timeline,{:add_step, ms_info})
+  end
+
+  def show_timeline_and_milestones(timeline) do
+    struct( show_timeline(timeline))
   end
 
 

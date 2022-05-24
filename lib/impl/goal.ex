@@ -37,7 +37,7 @@ defmodule Timeline.Impl.Goal do
   end
 
 
-  @spec add_milestone(t, Milestone.t) :: t
+  @spec add_milestone(t, pid) :: t
   def add_milestone(goal, milestone) do
     struct(goal, milestones: add_to_milestones(goal.milestones, milestone))
   end

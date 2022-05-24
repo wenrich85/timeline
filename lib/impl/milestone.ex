@@ -23,7 +23,7 @@ defmodule Timeline.Impl.Milestone do
 
   @spec new_milestone(map()) :: t
   def new_milestone(milestone_init) do
-    struct(%__MODULE__{}, milestone_init)
+    struct(%__MODULE__{}, Map.put(milestone_init, :id, UUID.uuid4(:hex)))
   end
 
   @spec update_milestone(t, map) :: t
@@ -31,14 +31,12 @@ defmodule Timeline.Impl.Milestone do
     struct(milestone, milestone_updates)
   end
 
-  @spec add_step(t, Step.t) :: t
+  @spec add_step(t, pid) :: t
   def add_step(milestone, step) do
-    struct(milestone, steps: add_to_steps(milestone.steps, step))
+    struct(milestone, steps: [step | milestone.steps])
   end
 
   ##############################PRIVATE FUNCTIONS############################################
 
-  defp add_to_steps(step_list, step) do
-    [step_list | step]
-  end
+
 end
