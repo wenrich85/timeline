@@ -1,6 +1,7 @@
 defmodule Timeline do
 
   alias Timeline.Runtime.Server
+  alias Timeline.Impl.Helpers
 
 
   def new_goal(initial_data) do
@@ -22,13 +23,7 @@ defmodule Timeline do
 
   def show_timeline(timeline) do
     tl = :sys.get_state(timeline)
-    struct( tl, milestones: Enum.map(tl.milestones, fn milestone ->
-                              Agent.get(milestone, fn ms_state ->
-                                Enum.map(ms_state.steps, fn step ->
-                                  Agent.get(step, fn step_state -> step_state end)
-                                end)
-                              end)
-                            end))
+    struct( tl, milestones: Helpers.expand_milestone_steps(tl.milestones))
 
   end
 
